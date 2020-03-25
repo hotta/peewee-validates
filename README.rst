@@ -1,21 +1,21 @@
 peewee-validates
 ################
 
-A simple and flexible model and data validator for `Peewee ORM <http://docs.peewee-orm.com/>`_.
+`Peewee ORM <http://docs.peewee-orm.com/>`_ のための、シンプルかつフレキシブルなモデルとデータバリデータ。
 
-.. image:: http://img.shields.io/travis/timster/peewee-validates.svg?style=flat
-    :target: http://travis-ci.org/timster/peewee-validates
+.. image:: https://img.shields.io/travis/timster/peewee-validates.svg?style=flat
+    :target: https://travis-ci.org/timster/peewee-validates
     :alt: Build Status
 
-.. image:: http://img.shields.io/coveralls/timster/peewee-validates.svg?style=flat
+.. image:: https://img.shields.io/coveralls/timster/peewee-validates.svg?style=flat
     :target: https://coveralls.io/r/timster/peewee-validates
     :alt: Code Coverage
 
-.. image:: http://img.shields.io/pypi/v/peewee-validates.svg?style=flat
+.. image:: https://img.shields.io/pypi/v/peewee-validates.svg?style=flat
     :target: https://pypi.python.org/pypi/peewee-validates
     :alt: Version
 
-.. image:: http://img.shields.io/pypi/dm/peewee-validates.svg?style=flat
+.. image:: https://img.shields.io/pypi/dm/peewee-validates.svg?style=flat
     :target: https://pypi.python.org/pypi/peewee-validates
     :alt: Downloads
 
@@ -23,26 +23,26 @@ A simple and flexible model and data validator for `Peewee ORM <http://docs.peew
     :target: https://peewee-validates.readthedocs.io
     :alt: Documentation
 
-Requirements
+必要事項
 ============
 
 * python >= 3.3
 * peewee >= 2.8.2 (including Peewee 3)
 * python-dateutil >= 2.5.0
 
-Installation
-============
+インストール
+==============
 
-This package can be installed using pip:
+このパッケージは pip でインストールできます:
 
 ::
 
     pip install peewee-validates
 
-Usage
-=====
+使い方
+========
 
-Here's a quick teaser of what you can do with peewee-validates:
+peewee-validates でできることを以下にチラ見せします:
 
 .. code:: python
 
@@ -62,7 +62,7 @@ Here's a quick teaser of what you can do with peewee-validates:
 
     # {'name': 'This field is required.', 'code': 'Must be a unique value.'}
 
-In fact, there is also a generic validator that does not even require a model:
+実際のところ、モデルさえ必要としない汎用的なバリデータもあります:
 
 .. code:: python
 
@@ -79,7 +79,9 @@ In fact, there is also a generic validator that does not even require a model:
 
     # {'name': 'This field is required.', 'code': 'Must be at most 5 characters.'}
 
-Documentation
+ドキュメント
 =============
 
-Check out the `Full Documentation <http://peewee-validates.readthedocs.io>`_ for more details.
+詳細は `完全なドキュメント <http://peewee-validates.readthedocs.io>`_ を参照してください。
+
+日本語ドキュメントは `https://net-newbie.com/peewee-validates/ <https://net-newbie.com/peewee-validates/>`_ にあります。

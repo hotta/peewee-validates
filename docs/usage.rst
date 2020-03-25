@@ -1,7 +1,7 @@
-Basic Validation
-================
+基本的なバリデーション
+=======================
 
-The very basic usage is a validator class that looks like this:
+最も基本的な使い方は、以下のように validator クラスを使う方法です:
 
 .. code:: python
 
@@ -12,20 +12,19 @@ The very basic usage is a validator class that looks like this:
 
     validator = SimpleValidator()
 
-This tells us that we want to validate data for one field (first_name).
+これはある１個のフィールド（下の名前）のデータをバリデート（正当であることを確認）したいことを表しています。
 
-Each field has an associated data type. In this case, using StringField will coerce the input data
-to ``str``.
+それぞれのフィールドは関連するデータ型を持っています。
+このケースでは、StringField を使って入力データを強制的に ``str`` として扱います。
 
-After creating an instance of our valitdator, then we call the ``validate()`` method and
-pass the data that we want to validate. The result we get back is a boolean indicating whether
-all validations were successful.
+バリデータのインスタンスが作成されると、 ``validate()`` メソッドが呼ばれ、バリデートしたいデータが渡されます。
+その戻り値は、すべてのバリデーションが成功したかどうかを表すブール値です。
 
-The validator then has two dictionaries that you mway want to access: ``data`` and ``errors``.
+バリデータはこの後 ``data`` と ``errors`` という２つの辞書を保持しており、プログラマはこれらにアクセスできます。
 
-``data`` is the input data that may have been mutated after validations.
+``data`` は入力データですが、これはバリデーション後に変更された可能性があります。
 
-``errors`` is a dictionary of any error messages.
+``errors`` は何らかのエラーメッセージの辞書です。
 
 .. code:: python
 
@@ -38,12 +37,12 @@ The validator then has two dictionaries that you mway want to access: ``data`` a
     print(validator.errors)
     # {'first_name': 'This field is required'}
 
-In this case we can see that there was one error for ``first_name``.
-That's because we gave it the ``validate_not_empty()`` validator but did not pass any data for
-that field. Also notice that the ``data`` dict is empty because the validators did not pass.
+この例では ``first_name`` で１個のエラーが起こっています。
+これは ``validate_not_empty()`` に渡す際、そのフィールドのデータを渡していない（空文字列を渡している）からです。
+また ``data`` 辞書は空になっていますが、これはバリデータが値を渡していないからです。
 
-When we pass data that matches all validators, the ``errors`` dict will be empty and the ``data``
-dict will be populated:
+すべてのバリデータにマッチするようなデータを渡した場合、 ``errors`` 辞書は空になり、
+``data`` 辞書には値がセットされます:
 
 .. code:: python
 
@@ -56,19 +55,18 @@ dict will be populated:
     print(validator.errors)
     # {}
 
-The ``data`` dict will contain the values after any validators, type coersions, and
-any other custom modifiers. Also notice that we are able to reuse the same validator instance
-while passing a new data dict.
+``data`` 辞書には何らかのバリデータの後の値、強制変更された後の型、およびその他のカスタムモディファイアがセットされます。
+さらに、この同じバリデータインスタンスに対して別の新しい辞書データを渡すことで、バリデータを再利用できます。
 
-Data Type Coersion
-------------------
+データ型の強制変更
+---------------------
 
-One of the first processes that happens when data validation takes place is data type coersion.
+データバリデーションの際に行われる最初のプロセスは、データ型の強制変更(coerce)です。
 
-There are a number of different fields built-in. Check out the full list in the API Documentation.
+さまざまなフィールドがビルトインとして用意されています。完全なリストは API ドキュメントで確認してみてください。
 
-Here's an example of a field.
-This just duplicates the functionality of ``IntegerField`` to show you an as example.
+フィールドの一例を示します。
+これは単に、``IntegerField`` と同等の機能を実現する例を示すためのものです。
 
 .. code:: python
 
@@ -91,30 +89,29 @@ This just duplicates the functionality of ``IntegerField`` to show you an as exa
     validator.errors
     # {'code': 'Must be a valid integer.'}
 
-Available Validators
+利用可能なバリデータ
 ====================
 
-There are a bunch of built-in validators that can be accessed by importing from ``peewee_validates``.
+``peewee_validates`` からインポートすることで利用可能になるビルトインのバリデータがたくさんあります。
 
-* ``validate_email()`` - validate that data is an email address
-* ``validate_equal(value)`` - validate that data is equal to ``value``
-* ``validate_function(method, **kwargs)`` - runs ``method`` with field value as first argument and ``kwargs`` and alidates that the result is truthy
-* ``validate_length(low, high, equal)`` - validate that length is between ``low`` and ``high`` or equal to ``equal``
-* ``validate_none_of(values)`` - validate that value is not in ``values``. ``values`` can also be a callable that returns values when called
-* ``validate_not_empty()`` - validate that data is not empty
-* ``validate_one_of(values)`` - validate that value is in ``values``. ``values`` can also be a callable that returns values when called
-* ``validate_range(low, high)`` - validate that value is between ``low`` and ``high``
-* ``validate_regexp(pattern, flags=0)`` - validate that value matches ``patten``
-* ``validate_required()`` - validate that the field is present
+* ``validate_email()`` - データがEメールアドレスであることをバリデート
+* ``validate_equal(value)`` - データが ``value`` と等しいことをバリデート
+* ``validate_function(method, **kwargs)`` - 第一引数がフィールド値、第二引数以降が ``kwargs`` として ``method`` を呼ぶことで結果の正当性をバリデート
+* ``validate_length(low, high, equal)`` - 長さが ``low`` と ``high`` の間もしくは ``equal`` と等しいかどうかをバリデート
+* ``validate_none_of(values)`` - 値が ``values`` の中にないことをバリデート。``values`` には、呼ばれたら値を返すような callable も指定できます。
+* ``validate_not_empty()`` - データが空でないことをバリデート
+* ``validate_one_of(values)`` - 値が ``values`` の中にあることをバリデート。``values`` には、呼ばれたら値を返すような callable も指定できます。
+* ``validate_range(low, high)`` - 値が ``low`` と ``high`` の間であることをバリデート
+* ``validate_regexp(pattern, flags=0)`` - 値が ``patten`` にマッチすることをバリデート
+* ``validate_required()`` - フィールドが存在することをバリデート
 
-Custom Validators
-=================
+カスタムバリデータ
+===================
 
-A field validator is just a method with the signature ``validator(field, data)`` where
-field is a ``Field`` instance and ``data`` is the data dict that is passed to ``validate()``.
+フィールドバリデータは、 ``validator(field, data)`` シグニチャを持つ単なるメソッドです。
+フィールドが ``Field`` インスタンス、 ``data`` が data 辞書として ``validate()`` に渡されます。
 
-If we want to implement a validator that makes sure the name is always "tim" we could do it
-like this:
+名前が常に "tim" であることを保証するためのバリデータを実装したい場合、たとえば以下のようになります:
 
 .. code:: python
 
@@ -131,12 +128,12 @@ like this:
     validator.errors
     # {'name': 'Validation failed.'}
 
-That's not a very pretty error message, but I'll show you soon how to customize that.
+これはあまりきれいなエラーメッセージではないですが、これをカスタマイズする方法は後でご紹介します。
 
-Now let's say you want to implement a validator that checks the length of the field.
-The length should be configurable. So we can implement a validator that accepts a parameter
-and returns a validator function. We basically wrap our actual validator function with
-another function. That looks like this:
+さてここで、フィールドの長さをチェックするためのバリデータを実装したいとします。
+ここで、長さは設定可能とするべきでしょう。
+つまり、私たちはパラメータを受け取ってバリデーション関数を返すようなバリデータを実装可能です。
+基本的には実際のバリデータ関数を別の関数でラップするようにします。たとえば以下のようになります:
 
 .. code:: python
 
@@ -155,14 +152,14 @@ another function. That looks like this:
     validator.errors
     # {'name': 'Validation failed.'}
 
-Custom Error Messages
-=====================
+カスタムエラーメッセージ
+=========================
 
-In some of the previous examples, we saw that the default error messages are not always that
-friendly. Error messages can be changed by settings the ``messages`` attribute on the ``Meta``
-class. Error messages are looked up by a key, and optionally prefixed with the field name.
+これまでにお見せした例では、デフォルトのエラーメッセーが必ずしもわかりやすいものではありませんでした。
+エラーメッセージは ``Meta`` クラスの ``messages`` 属性をセットすることで変更可能です。
+エラーメッセージはキーで検索され、さらにオプションで頭にフィールド名を付加できます。
 
-The key is the first argument passed to ``ValidationError`` when an error is raised.
+キーは、エラーが起こったときに ``ValidationError`` に渡された第一引数です。
 
 .. code:: python
 
@@ -171,11 +168,13 @@ The key is the first argument passed to ``ValidationError`` when an error is rai
 
         class Meta:
             messages = {
-                'required': 'Please enter a value.'
+                'required': '値を入力してください.'
             }
 
 Now any field that is required will have the error message "please enter a value".
 We can also change this for specific fields by prefixing with field name:
+これで入力必須の項目のエラーメッセージはすべて "値を入力してください." になります。
+さらに、頭にフィールド名を付けることで、特定のフィールドについて別のメッセージにすることができます。
 
 .. code:: python
 
@@ -185,20 +184,20 @@ We can also change this for specific fields by prefixing with field name:
 
         class Meta:
             messages = {
-                'name.required': 'Enter your name.',
-                'required': 'Please enter a value.',
+                'name.required': '名前を入力してください.',
+                'required': '値を入力してください.',
             }
 
-Now the ``name`` field will have the error message "Enter your name." but all other
-required fields will use the other error message.
+これで ``name`` フィールドのエラーメッセージは "名前を入力してください."、
+それ以外の必須フィールドについてはその他のエラーメッセージを使うようになります。
 
-Excluding/Limiting Fields
+フィールドの除外／限定
 =========================
 
-It's possible to limit or exclude fields from validation. This can be done at the class level
-or when calling ``validate()``.
+バリデーションの際に特定のフィールドを限定または除外することができます。
+これはクラスレベル、もしくは ``validate()`` コール時に行います。
 
-This will only validate the ``name`` and ``color`` fields when ``validate()`` is called:
+これは ``validate()`` がコールされた際、``name`` および ``color`` フィールドの場合のみについてバリデートします:
 
 .. code:: python
 
@@ -210,24 +209,25 @@ This will only validate the ``name`` and ``color`` fields when ``validate()`` is
         class Meta:
             only = ('name', 'color')
 
-And similarly, you can override this when ``validate()`` is called:
+同様に、``validate()`` が呼ばれた際にオーバーライドも可能です:
 
 .. code:: python
 
     validator = SimpleValidator()
     validator.validate(data, only=('color', 'name'))
 
-Now only ``color`` and ``name`` will be validated, ignoring the definition on the class.
+これでクラスの定義は無視され、``color`` と ``name`` のみがバリデートされます。
 
-There's also an ``exclude`` attribute to exclude specific fields from validation. It works
-the same way that ``only`` does.
+バリデーションから特定のフィールドを除外する ``exclude`` 属性もあります。
+これは ``only`` の時と同様に使えます。
 
-Model Validation
-================
+モデルのバリデーション
+=======================
 
-You may be wondering why this package is called peewee-validates when nothing we have discussed
-so far has anything to do with Peewee. Well here is where you find out. This package includes a
-ModelValidator class for using the validators we already talked about to validate model instances.
+ここまでの時点で Peewee に関することついては何も言及していないにも関わらず、
+このパッケージがなぜ peewee-validates と呼ばれるのか、不思議に思われるかもしれません。
+ここでその謎を解き明かします。このパッケージには ModelValidator クラスが含まれていますが、
+これはすでに述べたように、モデルインスタンスをバリデートするのに使っています。
 
 .. code:: python
 
@@ -243,7 +243,7 @@ ModelValidator class for using the validators we already talked about to validat
     validator = ModelValidator(obj)
     validator.validate()
 
-In this case, the ModelValidator has built a Validator class that looks like this:
+この例では、以下のように ModelValidator がバリデータをビルドしています:
 
 .. code:: python
 
@@ -256,18 +256,17 @@ In this case, the ModelValidator has built a Validator class that looks like thi
             validators=[unique_code_validator])
         name = peewee.StringField(required=True, max_length=250)
 
-Notice the many things that have been defined in our model that have been automatically converted
-to validator attributes:
+私たちのモデルの中で多くのものが定義され、自動的にバリデータの属性として変換されているのがわかります:
 
-* name is required string
-* name must be 250 character or less
-* code is required integer
-* code must be a unique value in the table
+* name は必須の文字列
+* name は 250 文字以下
+* code は必須の整数
+* code はテーブル内でユニークでなければならない
 
-We can then use the validator to validate data.
+これでバリデータを使ってデータをバリデートできるようになりました。
 
-By default, it will validate the data directly on the model instance, but you can always pass
-a dictionary to ``validates`` that will override any data on the instance.
+デフォルトでは、これはモデルのインスタンスで直接データをバリデートしますが、
+いつでも辞書を ``validates`` に渡すことでインスタンスの任意のデータをオーバーライドできます。
 
 .. code:: python
 
@@ -280,11 +279,9 @@ a dictionary to ``validates`` that will override any data on the instance.
     validator.errors
     # {'code': 'Must be a valid integer.'}
 
-This fails validation because the data passed in was not a number, even though the data on the
-instance was valid.
+渡されたデータが数字ではないため、たとえインスタンスのデータが有効であったとしても、このバリデーションは失敗します。
 
-You can also create a subclass of ``ModelValidator`` to use all the other things we have
-shown already:
+``ModelValidator`` のサブクラスを作って、その中でこれまでに示したあらゆる要素を使うこともできます:
 
 .. code:: python
 
@@ -301,7 +298,7 @@ shown already:
     validator = ModelValidator(obj)
     validator.validate(data)
 
-When validations is successful for ModelValidator, the given model instance will have been mutated.
+ModelValidator についてバリデーションが成功したら、指定されたモデルインスタンスの中身は変更されます。
 
 .. code:: python
 
@@ -315,32 +312,31 @@ When validations is successful for ModelValidator, the given model instance will
     obj.name
     # 'newname'
 
-Field Validations
------------------
+フィールドのバリデーション
+---------------------------
 
-Using the ModelValidator provides a couple extra goodies that are not found in the standard
-Validator class.
+ModelValidator を使うと、標準の Validator クラスにはない機能が使えるようになります。
 
-**Uniqueness**
+**ユニーク性**
 
-If the Peewee field was defined with ``unique=True`` then a validator will be added to the
-field that will look up the value in the database to make sure it's unique. This is smart enough
-to know to exclude the current instance if it has already been saved to the database.
+Peewee のフィールドが ``unique=True`` で定義されている場合、そのフィールドにバリデータが追加され、
+データベース内でそれがユニークであるかどうかが検査されます。これにより、
+すでにデータベースに保存された値であっても、現在のインスタンスを除外するべきかどうかが判別できます。
 
-**Foreign Key**
+**外部キー**
 
-If the Peewee field is a ``ForeignKeyField`` then a validator will be added to the field
-that will look up the value in the related table to make sure it's a valid instance.
+Peewee のフィールドが ``ForeignKeyField`` の場合、そのフィールドにバリデータが追加され、
+データベースの関連するテーブルにその値があることが検査され、それが有効なインスタンスであることが保証されます。
 
 **Many to Many**
 
-If the Peewee field is a ``ManyToManyField`` then a validator will be added to the field
-that will look up the values in the related table to make sure it's valid list of instances.
+Peewee のフィールドが  ``ManyToManyField`` の場合、そのフィールドにバリデータが追加され、
+データベースの関連するテーブル（群）にその値があることが検査され、それが有効なインスタンスであることが保証されます。
 
-**Index Validation**
+**インデックスのバリデーション**
 
-If you have defined unique indexes on the model like the example below, they will also
-be validated (after all the other field level validations have succeeded).
+以下の例のようにそのモデルにユニークなインデックスを定義している場合、
+（他のすべてのフィールドレベルのバリデーションが成功した後で）これについてもバリデートされます。
 
 .. code:: python
 
@@ -353,11 +349,12 @@ be validated (after all the other field level validations have succeeded).
                 (('name', 'code'), True),
             )
 
-Field Overrides
-===============
+フィールドのオーバーライド
+==========================
 
-If you need to change the way a model field is validated, you can simply override the field
-in your custom class. Given the following model:
+モデルのフィールドのバリデート方法を変更する必要がある場合、
+単にカスタムクラス内でそのフィールドをオーバーライドするだけで済みます。
+以下のモデルについて例を示します:
 
 .. code:: python
 
@@ -365,6 +362,7 @@ in your custom class. Given the following model:
         code = peewee.IntegerField(required=True)
 
 This would generate a field for ``code`` with a required validator.
+これにより、 required バリデータを持つ ``code`` に対応するフィールドが生成されます。
 
 .. code:: python
 
@@ -374,17 +372,18 @@ This would generate a field for ``code`` with a required validator.
     validator = CategoryValidator(category)
     validator.validate()
 
-Now ``code`` will not be required when the call to ``validate`` happens.
+これで ``validate`` への呼び出しが起こっても、``code`` は必須ではなくなります。
 
-Overriding Behaviors
-====================
+ビヘイビア(振舞い)をオーバーライドする
+======================================
 
-Cleaning
---------
+クリーニング
+-------------
 
-Once all field-level data has been validated during ``validate()``, the resulting data is
-passed to the ``clean()`` method before being returned in the result. You can override this
-method to perform any validations you like, or mutate the data before returning it.
+``validate()`` の最中、フィールドレベルのデータがすべてバリデートされると、
+その結果データは上位に返される前に ``clean()`` メソッドに渡されます。
+このメソッドをオーバーライドすることで、好きなバリデーションを実行したり、
+また返すデータを変更したりすることが可能です。
 
 .. code:: python
 
@@ -403,14 +402,14 @@ method to perform any validations you like, or mutate the data before returning 
 
         class Meta:
             messages = {
-                'name_different': 'The names should be the same.'
+                'name_different': '名前は同じでなければなりません.'
             }
 
-Adding Fields Dynamically
--------------------------
+フィールドを動的に追加する
+-----------------------------
 
-If you need to, you can dynamically add a field to a validator instance.
-They are stored in the ``_meta.fields`` dict, which you can manipulate as much as you want.
+必要であれば、バリデータインスタンスに動的にフィールドを追加することが可能です。
+追加されたフィールドは ``_meta.fields`` 辞書に格納されるので、これらを自由に操作できます。
 
 .. code:: python
 
